@@ -1,32 +1,83 @@
-﻿using IndUppClassModels;
+﻿using Indiv.Uppgiftv2.Data;
+using Indiv.Uppgiftv2.Methods;
+using IndUppClassModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Indiv.Uppgiftv2.Services
 {
     public class AppointmentRepo : IAppointment<Appointment>
     {
-        public Task Add(Appointment appointment)
+        private AppDbContext _dbContext;
+        public AppointmentRepo(AppDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+        }
+        public async Task<Appointment> Add(Appointment newAppointment)
+        {
+
+            newAppointment.EndTime = newAppointment.StartTime.AddHours(1); // Ensure EndTime is set correctly
+            var result = await _dbContext.Appointments.AddAsync(newAppointment);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
+
+            //lägg till något som sparar data.
+
         }
 
-        public Task Delete(Appointment appointment)
+        public async Task<Appointment> Delete(int appointmentID)
         {
-            throw new NotImplementedException();
+            var result = await _dbContext.Appointments.FirstOrDefaultAsync(a => a.AppointmentID == appointmentID);
+            if (result != null)
+            {
+                _dbContext.Appointments.Remove(result);
+                await _dbContext.SaveChangesAsync();
+                return result;
+            }
+            return null;
+
         }
 
-        public Task<IEnumerable<Appointment>> GetAllAppointmentsThisMonth()
+        public async Task<IEnumerable<Appointment>> GetAllAppointmentsThisMonth()
         {
-            throw new NotImplementedException();
+            var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+            return await _dbContext.Appointments
+                .Include(a => a.Customer)
+                .Where(a => a.Date >= startOfMonth && a.Date <= endOfMonth)
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<Appointment>> GetAllAppointmentsThisWeek()
+        public async Task<IEnumerable<Appointment>> GetAllAppointmentsThisWeek()
         {
-            throw new NotImplementedException();
+            var startOfWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
+            var endOfWeek = startOfWeek.AddDays(7).AddSeconds(-1);
+            return await _dbContext.Appointments
+                .Include(a => a.Customer)
+                .Where(a => a.Date >= startOfWeek && a.Date <= endOfWeek)
+                .ToListAsync();
         }
 
-        public Task Update(Appointment appointment)
+        public async Task<Appointment> GetSingle(int id)
         {
-            throw new NotImplementedException();
+            var appointment = await _dbContext.Appointments.Include(a => a.Customer).
+                FirstOrDefaultAsync(a => a.AppointmentID == id);
+            return appointment;
+        }
+
+        public async Task<Appointment> Update(Appointment entity)
+        {
+            var result = await _dbContext.Appointments.FirstOrDefaultAsync(a => a.AppointmentID == entity.AppointmentID);
+            if (result != null)
+            { //spara gammal data
+                result.Date = entity.Date;
+                result.StartTime = entity.StartTime;
+                entity.EndTime = entity.StartTime.AddHours(1);
+            }
+            // Ensures EndTime is set correctly
+            await _dbContext.SaveChangesAsync();
+            return result;
+
+            //lägg till parameter för att spara data
         }
     }
 }

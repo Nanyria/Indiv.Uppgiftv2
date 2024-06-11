@@ -7,9 +7,11 @@ namespace Indiv.Uppgiftv2.Services
         public Task<IEnumerable<Appointment>> GetAllAppointmentsThisWeek();
         public Task<IEnumerable<Appointment>> GetAllAppointmentsThisMonth();
 
+        public Task<Appointment> GetSingle(int id);
+        public Task<T> Add(Appointment appointment);
+        public Task<T> Delete(int id);
+        public Task<T> Update(Appointment appointment);
 
-        public Task Add(Appointment appointment);
-        public Task Delete(Appointment appointment);
-        public Task Update(Appointment appointment);
+        //Sätta lagring på appointments här eller under customer?
     }
 }
