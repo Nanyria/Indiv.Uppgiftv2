@@ -16,6 +16,7 @@ namespace IndUppClassModels
         [StringLength(25)]
         public string PassWord { get; set; }
 
+        public string Role { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
 
         

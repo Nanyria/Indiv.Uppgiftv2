@@ -49,9 +49,21 @@ namespace Indiv.Uppgiftv2.Services
             return await query.ToListAsync();
         }
 
-        public Task<Customer> Update(Customer customer)
+        public async Task<Customer> Update(Customer entity)
         {
-            throw new NotImplementedException();
+            var customer = await _dbContext.Customers
+                .Include(a => a.Appointments)
+                .FirstOrDefaultAsync(c => c.CustomerID == entity.CustomerID);
+            if (customer != null)
+            {
+                customer.FirstName = entity.FirstName;
+                customer.LastName = entity.LastName;
+                customer.PassWord = entity.PassWord;
+
+                await _dbContext.SaveChangesAsync();
+                return customer;
+            }
+            return null;
         }
     }
 }
