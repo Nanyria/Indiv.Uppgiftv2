@@ -9,6 +9,7 @@ namespace Indiv.Uppgiftv2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //
     public class LoginController : ControllerBase
     {
         [HttpPost, Route("login")]
