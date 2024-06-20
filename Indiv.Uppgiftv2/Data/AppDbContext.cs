@@ -23,6 +23,7 @@ namespace Indiv.Uppgiftv2.Data
             modelBuilder.Entity<Customer>().HasData(new Customer
             {
                 CustomerID = 1001,
+                Username = "AA1001",
                 FirstName = "Andrea",
                 LastName = "Almer",
                 PassWord = "abC321"
@@ -31,6 +32,7 @@ namespace Indiv.Uppgiftv2.Data
             modelBuilder.Entity<Customer>().HasData(new Customer
             {
                 CustomerID = 1002,
+                Username = "BA1002",
                 FirstName = "Beata",
                 LastName = "Almer",
                 PassWord = "123Fyra"
@@ -74,6 +76,14 @@ namespace Indiv.Uppgiftv2.Data
                 Date = new DateTime(2024, 7, 2),
                 StartTime = new DateTime(2024, 7, 2, 13, 0, 0),
                 EndTime = new DateTime(2024, 7, 2, 14, 0, 0),
+            });
+            modelBuilder.Entity<Employee>().HasData(new Employee
+            {
+                EmployeeID = 1001,
+                UserName = "Admin1001",
+                EFirstName = "Admin",
+                ELastName = "AdminLastName",
+                EPassWord = "123Password"
             });
 
         }

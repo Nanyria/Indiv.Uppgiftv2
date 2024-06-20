@@ -8,6 +8,7 @@ namespace Indiv.Uppgiftv2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private ICustomer _customer;
@@ -16,7 +17,7 @@ namespace Indiv.Uppgiftv2.Controllers
             _customer = customer;
         }
 
-        [HttpGet(Name = "GetAllCustomers"), Authorize]
+        [HttpGet(Name = "GetAllCustomers")]
         public async Task<ActionResult<Customer>> GetAllCustomers()
         {
             try

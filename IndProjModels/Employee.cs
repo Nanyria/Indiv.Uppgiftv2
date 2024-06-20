@@ -12,6 +12,8 @@ namespace IndUppClassModels
         [Key]
         public int EmployeeID { get; set; }
         [Required]
+        public string UserName { get; set; }
+        [Required]
         public string EFirstName { get; set; }
         [Required]
         public string ELastName { get; set; }
