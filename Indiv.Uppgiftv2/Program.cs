@@ -1,5 +1,3 @@
-
-using AutoMapper;
 using Indiv.Uppgiftv2.Data;
 using Indiv.Uppgiftv2.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +7,9 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 //Jwt configuration starts here
 var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
@@ -55,14 +56,32 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
          ValidateIssuerSigningKey = true,
          ValidIssuer = jwtIssuer,
          ValidAudience = jwtIssuer,
-         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+         RequireExpirationTime = true,
+         ClockSkew = TimeSpan.Zero
+     };
+     options.Events = new JwtBearerEvents
+     {
+         OnAuthenticationFailed = context =>
+         {
+             context.Response.Headers.Add("Authentication-Failed", context.Exception.Message);
+             return Task.CompletedTask;
+         }
      };
  });
 //Jwt configuration ends here
-
+builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.
+            Serialization.ReferenceHandler.IgnoreCycles;
+        });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ICustomer, CustomerRepo>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 var app = builder.Build();
 
@@ -74,6 +93,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.Use(async (context, next) =>
+{
+    foreach (var header in context.Request.Headers)
+    {
+        Console.WriteLine($"{header.Key}: {header.Value}");
+    }
+    await next();
+});
 app.UseAuthentication();
 app.UseAuthorization();
 

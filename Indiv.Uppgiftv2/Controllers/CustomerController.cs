@@ -6,9 +6,10 @@ using System.Linq.Expressions;
 
 namespace Indiv.Uppgiftv2.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    
     public class CustomerController : ControllerBase
     {
         private ICustomer _customer;

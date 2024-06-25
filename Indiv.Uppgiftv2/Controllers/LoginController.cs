@@ -33,8 +33,8 @@ namespace Indiv.Uppgiftv2.Controllers
                 Subject = new ClaimsIdentity(new[] { new Claim("id", "1") }),
                 Expires = DateTime.UtcNow.AddHours(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = "youtCompanyIssuer.com",
-                Audience = "youtCompanyIssuer.com"
+                Issuer = "yourCompanyIssuer.com",
+                Audience = "yourCompanyIssuer.com"
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
