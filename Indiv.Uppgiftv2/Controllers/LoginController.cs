@@ -25,15 +25,16 @@ namespace Indiv.Uppgiftv2.Controllers
 
         private string GenerateJwtToken()
         {
+
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes("G7DkUJneKl1Z3YRpQF6sjV8hT3mC9gX5");
+            var key = Encoding.UTF8.GetBytes("YourSecretKeyForAuthenticationOfApplication");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", "1") }),
                 Expires = DateTime.UtcNow.AddHours(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = "https://localhost",
-                Audience = "https://localhost"
+                Issuer = "youtCompanyIssuer.com",
+                Audience = "youtCompanyIssuer.com"
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
