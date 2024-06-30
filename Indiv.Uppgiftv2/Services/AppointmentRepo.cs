@@ -79,5 +79,18 @@ namespace Indiv.Uppgiftv2.Services
 
             //lägg till parameter för att spara data
         }
+        public async Task<int> SaveChangesAsync()
+        {
+            try
+            {
+                return await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                // Handle exceptions (logging, etc.) as needed for production
+                throw;
+            }
+        }
     }
 }
+

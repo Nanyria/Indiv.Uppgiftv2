@@ -123,7 +123,7 @@ namespace Indiv.Uppgiftv2.Controllers
                 {
                     return NotFound($"Customer with ID {id} not found.");
                 }
-                return await _customer.Update(customer);
+                return await _customer.Update(customerToUpdate);
             }
             catch (Exception)
             {

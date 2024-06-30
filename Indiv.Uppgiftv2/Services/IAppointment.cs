@@ -11,6 +11,7 @@ namespace Indiv.Uppgiftv2.Services
         public Task<T> Add(Appointment appointment);
         public Task<T> Delete(int id);
         public Task<T> Update(Appointment appointment);
+        public Task<int> SaveChangesAsync();
 
         //Sätta lagring på appointments här eller under customer?
     }

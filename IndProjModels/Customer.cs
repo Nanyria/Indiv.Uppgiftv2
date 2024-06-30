@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AutoMapper.Configuration.Annotations;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace IndUppClassModels
 {
@@ -18,7 +20,6 @@ namespace IndUppClassModels
         [Required]
         [StringLength(25)]
         public string PassWord { get; set; }
-
         public ICollection<Appointment> Appointments { get; set; }
 
         

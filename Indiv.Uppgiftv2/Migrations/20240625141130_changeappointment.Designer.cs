@@ -4,6 +4,7 @@ using Indiv.Uppgiftv2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Indiv.Uppgiftv2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240625141130_changeappointment")]
+    partial class changeappointment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,43 +24,6 @@ namespace Indiv.Uppgiftv2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("IndProjModels.AppointmentChanges", b =>
-                {
-                    b.Property<int>("AppointmentChangeID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentChangeID"));
-
-                    b.Property<int>("AppointmentID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ChangeType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Field")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreviousValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("AppointmentChangeID");
-
-                    b.HasIndex("AppointmentID");
-
-                    b.ToTable("AppointmentChanges");
-                });
 
             modelBuilder.Entity("IndUppClassModels.Appointment", b =>
                 {
@@ -218,17 +184,6 @@ namespace Indiv.Uppgiftv2.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IndProjModels.AppointmentChanges", b =>
-                {
-                    b.HasOne("IndUppClassModels.Appointment", "Appointment")
-                        .WithMany("Changes")
-                        .HasForeignKey("AppointmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Appointment");
-                });
-
             modelBuilder.Entity("IndUppClassModels.Appointment", b =>
                 {
                     b.HasOne("IndUppClassModels.Customer", "Customer")
@@ -238,11 +193,6 @@ namespace Indiv.Uppgiftv2.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("IndUppClassModels.Appointment", b =>
-                {
-                    b.Navigation("Changes");
                 });
 
             modelBuilder.Entity("IndUppClassModels.Customer", b =>
