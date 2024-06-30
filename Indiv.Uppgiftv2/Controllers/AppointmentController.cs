@@ -184,9 +184,11 @@ namespace Indiv.Uppgiftv2.Controllers
 
                 var json = JsonSerializer.Serialize(appointments, options);
 
-                // Write the JSON to the file, overwriting the existing content
-                await System.IO.File.WriteAllTextAsync(_filePath, json);
 
+                using (var stream = new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.Read))
+                {
+                    await JsonSerializer.SerializeAsync(stream, appointments, options);
+                }
                 // Create an object to represent the change
                 var change = new
                 {
@@ -201,7 +203,11 @@ namespace Indiv.Uppgiftv2.Controllers
                 var changeJson = JsonSerializer.Serialize(change);
 
                 // Append the change to the file
-                await System.IO.File.AppendAllTextAsync(_filePath, changeJson + Environment.NewLine);
+                using (var stream = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
+                using (var writer = new StreamWriter(stream))
+                {
+                    await writer.WriteLineAsync(changeJson);
+                }
             }
             catch (Exception ex)
             {

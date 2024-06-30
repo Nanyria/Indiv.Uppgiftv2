@@ -16,19 +16,24 @@ namespace IndUppClassModels
         public int AppointmentID { get; set; }
 
         [Required]
+        [Display(Name = "Appointment Date")]
         public DateTime Date { get; set; }
 
         [Required]
+        [Display(Name = "Start Time")]
+        [DataType(DataType.Time)]
         public DateTime StartTime { get; set; }
 
         [Required]
+        [Display(Name = "End Time")]
+        [DataType(DataType.Time)]
         public DateTime EndTime { get; set; }
 
         public int CustomerID { get; set; }
 
+        [JsonIgnore]
         public Customer Customer { get; set; }
 
-        [JsonIgnore] // Exclude from JSON serialization
         public List<AppointmentChanges> Changes { get; set; }
 
         // Constructor to ensure Changes is always initialized

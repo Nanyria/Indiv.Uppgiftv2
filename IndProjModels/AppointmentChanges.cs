@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace IndProjModels
@@ -11,6 +12,7 @@ namespace IndProjModels
     {
         public int AppointmentChangeID { get; set; }
         public int AppointmentID { get; set; }
+        [JsonIgnore]
         public Appointment Appointment { get; set; }
         public DateTime Timestamp { get; set; }
         public string ChangeType { get; set; }

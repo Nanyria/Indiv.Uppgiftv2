@@ -1,95 +1,37 @@
-{
-  "$id": "1",
-  "$values": [
-    {
-      "$id": "2",
-      "AppointmentID": 1001,
-      "Date": "2024-06-30T00:00:00",
-      "StartTime": "2024-06-30T09:00:00",
-      "EndTime": "2024-06-30T10:00:00",
-      "CustomerID": 1001,
-      "Customer": {
-        "$id": "3",
-        "CustomerID": 1001,
-        "Username": "AA1001",
-        "FirstName": "Andrea",
-        "LastName": "Almer",
-        "PassWord": "abC321",
-        "Appointments": {
-          "$id": "4",
-          "$values": [
-            {
-              "$ref": "2"
-            },
-            {
-              "$id": "5",
-              "AppointmentID": 1002,
-              "Date": "2024-06-26T00:00:00",
-              "StartTime": "2024-06-26T09:00:00",
-              "EndTime": "2024-06-26T10:00:00",
-              "CustomerID": 1001,
-              "Customer": {
-                "$ref": "3"
-              }
-            },
-            {
-              "$id": "6",
-              "AppointmentID": 1003,
-              "Date": "2024-06-25T00:00:00",
-              "StartTime": "2024-06-25T09:00:00",
-              "EndTime": "2024-06-25T10:00:00",
-              "CustomerID": 1001,
-              "Customer": {
-                "$ref": "3"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "$ref": "5"
-    },
-    {
-      "$ref": "6"
-    },
-    {
-      "$id": "7",
-      "AppointmentID": 1004,
-      "Date": "2024-06-28T00:00:00",
-      "StartTime": "2024-06-28T10:00:00",
-      "EndTime": "2024-06-28T11:00:00",
-      "CustomerID": 1002,
-      "Customer": {
-        "$id": "8",
-        "CustomerID": 1002,
-        "Username": "BA1002",
-        "FirstName": "Beata",
-        "LastName": "Almer",
-        "PassWord": "123Fyra",
-        "Appointments": {
-          "$id": "9",
-          "$values": [
-            {
-              "$ref": "7"
-            },
-            {
-              "$id": "10",
-              "AppointmentID": 1005,
-              "Date": "2024-06-02T00:00:00",
-              "StartTime": "2024-06-02T13:00:00",
-              "EndTime": "2024-06-02T14:00:00",
-              "CustomerID": 1002,
-              "Customer": {
-                "$ref": "8"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "$ref": "10"
-    }
-  ]
-}
+[
+  {
+    "AppointmentID": 1001,
+    "Date": "2024-06-30T00:00:00",
+    "StartTime": "2024-06-30T09:00:00",
+    "EndTime": "2024-06-30T10:00:00",
+    "Changes": []
+  },
+  {
+    "AppointmentID": 1002,
+    "Date": "2024-06-26T00:00:00",
+    "StartTime": "2024-06-26T09:00:00",
+    "EndTime": "2024-06-26T10:00:00",
+    "Changes": []
+  },
+  {
+    "AppointmentID": 1003,
+    "Date": "2024-06-25T00:00:00",
+    "StartTime": "2024-06-25T09:00:00",
+    "EndTime": "2024-06-25T10:00:00",
+    "Changes": []
+  },
+  {
+    "AppointmentID": 1004,
+    "Date": "2024-06-28T00:00:00",
+    "StartTime": "2024-06-28T10:00:00",
+    "EndTime": "2024-06-28T11:00:00",
+    "Changes": []
+  },
+  {
+    "AppointmentID": 1005,
+    "Date": "2024-06-02T00:00:00",
+    "StartTime": "2024-06-02T13:00:00",
+    "EndTime": "2024-06-02T14:00:00",
+    "Changes": []
+  }
+]

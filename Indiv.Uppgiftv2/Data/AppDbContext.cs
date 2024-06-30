@@ -21,20 +21,13 @@ namespace Indiv.Uppgiftv2.Data
                 .WithMany(c => c.Appointments)
                 .HasForeignKey(a => a.CustomerID);
 
-            // Configure relationship for Appointment and AppointmentChange
             modelBuilder.Entity<Appointment>()
                 .HasMany(a => a.Changes)
                 .WithOne(ac => ac.Appointment) // AppointmentChange references Appointment
                 .HasForeignKey(ac => ac.AppointmentID); // Foreign key in AppointmentChange
 
-
             modelBuilder.Entity<AppointmentChanges>()
-               .HasKey(ac => ac.AppointmentChangeID); // Define AppointmentChangeID as primary key
-
-            modelBuilder.Entity<AppointmentChanges>()
-                .HasOne(ac => ac.Appointment)
-                .WithMany(a => a.Changes)
-                .HasForeignKey(ac => ac.AppointmentID);
+                .HasKey(ac => ac.AppointmentChangeID); // Define AppointmentChangeID as primary key
             //SeedData
 
             base.OnModelCreating(modelBuilder);
