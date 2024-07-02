@@ -1,5 +1,7 @@
+using AutoMapper;
 using Indiv.Uppgiftv2.Data;
 using Indiv.Uppgiftv2.Services;
+using IndProjModels;
 using IndUppClassModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +46,7 @@ builder.Services.AddSwaggerGen(c =>
                         new string[] { }
                     }
                 });
+    c.SchemaFilter<ExcludePropertiesSchemaFilter>();
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -82,9 +85,11 @@ builder.Services.AddScoped<IAppointment<Appointment>, AppointmentRepo>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 var app = builder.Build();
 
+var mapper = app.Services.GetRequiredService<IMapper>();
+mapper.ConfigurationProvider.AssertConfigurationIsValid();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

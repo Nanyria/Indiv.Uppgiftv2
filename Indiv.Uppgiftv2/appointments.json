@@ -1,37 +1,15 @@
-[
-  {
-    "AppointmentID": 1001,
-    "Date": "2024-06-30T00:00:00",
-    "StartTime": "2024-06-30T09:00:00",
-    "EndTime": "2024-06-30T10:00:00",
-    "Changes": []
-  },
-  {
-    "AppointmentID": 1002,
-    "Date": "2024-06-26T00:00:00",
-    "StartTime": "2024-06-26T09:00:00",
-    "EndTime": "2024-06-26T10:00:00",
-    "Changes": []
-  },
-  {
-    "AppointmentID": 1003,
-    "Date": "2024-06-25T00:00:00",
-    "StartTime": "2024-06-25T09:00:00",
-    "EndTime": "2024-06-25T10:00:00",
-    "Changes": []
-  },
-  {
-    "AppointmentID": 1004,
-    "Date": "2024-06-28T00:00:00",
-    "StartTime": "2024-06-28T10:00:00",
-    "EndTime": "2024-06-28T11:00:00",
-    "Changes": []
-  },
-  {
-    "AppointmentID": 1005,
-    "Date": "2024-06-02T00:00:00",
-    "StartTime": "2024-06-02T13:00:00",
-    "EndTime": "2024-06-02T14:00:00",
-    "Changes": []
-  }
-]
+{
+  "$id": "1",
+  "AppointmentID": 1004,
+  "ChangeType": "Update",
+  "Timestamp": "2024-07-02T12:07:39.6815774Z",
+  "PreviousValue": "{\r\n  \u0022$id\u0022: \u00221\u0022,\r\n  \u0022appointmentID\u0022: 1004,\r\n  \u0022date\u0022: \u00222024-07-28T00:00:00\u0022,\r\n  \u0022startTime\u0022: \u00222024-07-28T10:00:00\u0022,\r\n  \u0022endTime\u0022: \u00222024-07-28T11:00:00\u0022,\r\n  \u0022customerID\u0022: 1002,\r\n  \u0022customer\u0022: {\r\n    \u0022$id\u0022: \u00222\u0022,\r\n    \u0022customerID\u0022: 1002,\r\n    \u0022username\u0022: \u0022BA1002\u0022,\r\n    \u0022firstName\u0022: \u0022Beata\u0022,\r\n    \u0022lastName\u0022: \u0022Almer\u0022,\r\n    \u0022passWord\u0022: \u0022123Fyra\u0022,\r\n    \u0022appointments\u0022: {\r\n      \u0022$id\u0022: \u00223\u0022,\r\n      \u0022$values\u0022: [\r\n        {\r\n          \u0022$ref\u0022: \u00221\u0022\r\n        }\r\n      ]\r\n    }\r\n  },\r\n  \u0022changes\u0022: {\r\n    \u0022$id\u0022: \u00224\u0022,\r\n    \u0022$values\u0022: []\r\n  }\r\n}",
+  "NewValue": "{\r\n  \u0022$id\u0022: \u00221\u0022,\r\n  \u0022AppointmentID\u0022: 1004,\r\n  \u0022Date\u0022: \u00222024-07-27T00:00:00\u0022,\r\n  \u0022StartTime\u0022: \u00222024-07-27T10:00:00\u0022,\r\n  \u0022EndTime\u0022: \u00222024-07-27T11:00:00\u0022,\r\n  \u0022CustomerID\u0022: 1002,\r\n  \u0022Customer\u0022: {\r\n    \u0022$id\u0022: \u00222\u0022,\r\n    \u0022CustomerID\u0022: 1002,\r\n    \u0022Username\u0022: \u0022BA1002\u0022,\r\n    \u0022FirstName\u0022: \u0022Beata\u0022,\r\n    \u0022LastName\u0022: \u0022Almer\u0022,\r\n    \u0022PassWord\u0022: \u0022123Fyra\u0022,\r\n    \u0022Appointments\u0022: {\r\n      \u0022$id\u0022: \u00223\u0022,\r\n      \u0022$values\u0022: [\r\n        {\r\n          \u0022$ref\u0022: \u00221\u0022\r\n        }\r\n      ]\r\n    }\r\n  },\r\n  \u0022Changes\u0022: {\r\n    \u0022$id\u0022: \u00224\u0022,\r\n    \u0022$values\u0022: []\r\n  }\r\n}"
+} {
+  "$id": "1",
+  "AppointmentID": 1004,
+  "ChangeType": "Update",
+  "Timestamp": "2024-07-02T12:19:45.3801366Z",
+  "PreviousValue": "{\r\n  \u0022$id\u0022: \u00221\u0022,\r\n  \u0022appointmentID\u0022: 1004,\r\n  \u0022date\u0022: \u00222024-07-27T00:00:00\u0022,\r\n  \u0022startTime\u0022: \u00222024-07-27T10:00:00\u0022,\r\n  \u0022endTime\u0022: \u00222024-07-27T11:00:00\u0022,\r\n  \u0022customerID\u0022: 1002,\r\n  \u0022customer\u0022: {\r\n    \u0022$id\u0022: \u00222\u0022,\r\n    \u0022customerID\u0022: 1002,\r\n    \u0022username\u0022: \u0022BA1002\u0022,\r\n    \u0022firstName\u0022: \u0022Beata\u0022,\r\n    \u0022lastName\u0022: \u0022Almer\u0022,\r\n    \u0022passWord\u0022: \u0022123Fyra\u0022,\r\n    \u0022appointments\u0022: {\r\n      \u0022$id\u0022: \u00223\u0022,\r\n      \u0022$values\u0022: [\r\n        {\r\n          \u0022$ref\u0022: \u00221\u0022\r\n        }\r\n      ]\r\n    }\r\n  },\r\n  \u0022changes\u0022: {\r\n    \u0022$id\u0022: \u00224\u0022,\r\n    \u0022$values\u0022: []\r\n  }\r\n}",
+  "NewValue": "{\r\n  \u0022$id\u0022: \u00221\u0022,\r\n  \u0022AppointmentID\u0022: 1004,\r\n  \u0022Date\u0022: \u00222024-07-25T00:00:00\u0022,\r\n  \u0022StartTime\u0022: \u00222024-07-25T10:00:00\u0022,\r\n  \u0022EndTime\u0022: \u00222024-07-25T11:00:00\u0022,\r\n  \u0022CustomerID\u0022: 1002,\r\n  \u0022Customer\u0022: {\r\n    \u0022$id\u0022: \u00222\u0022,\r\n    \u0022CustomerID\u0022: 1002,\r\n    \u0022Username\u0022: \u0022BA1002\u0022,\r\n    \u0022FirstName\u0022: \u0022Beata\u0022,\r\n    \u0022LastName\u0022: \u0022Almer\u0022,\r\n    \u0022PassWord\u0022: \u0022123Fyra\u0022,\r\n    \u0022Appointments\u0022: {\r\n      \u0022$id\u0022: \u00223\u0022,\r\n      \u0022$values\u0022: [\r\n        {\r\n          \u0022$ref\u0022: \u00221\u0022\r\n        }\r\n      ]\r\n    }\r\n  },\r\n  \u0022Changes\u0022: {\r\n    \u0022$id\u0022: \u00224\u0022,\r\n    \u0022$values\u0022: []\r\n  }\r\n}"
+}

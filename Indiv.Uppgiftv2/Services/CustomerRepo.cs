@@ -18,9 +18,16 @@ namespace Indiv.Uppgiftv2.Services
             return result.Entity;
         }
 
-        public async Task<Customer> Delete(int id)
+        public async Task<Customer> Delete(int customerID)
         {
-            throw new NotImplementedException();
+            var result = await _dbContext.Customers.FirstOrDefaultAsync(a => a.CustomerID == customerID);
+            if (result != null)
+            {
+                _dbContext.Customers.Remove(result);
+                await _dbContext.SaveChangesAsync();
+                return result;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<Customer>> GetAllCustomers() //string pw

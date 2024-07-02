@@ -31,20 +31,17 @@ namespace IndUppClassModels
 
         public int CustomerID { get; set; }
 
-        [JsonIgnore]
         public Customer Customer { get; set; }
 
-        public List<AppointmentChanges> Changes { get; set; }
-
-        // Constructor to ensure Changes is always initialized
-        public Appointment()
-        {
-            Changes = new List<AppointmentChanges>();
-        }
+        public List<AppointmentChanges> Changes { get; set; } = new List<AppointmentChanges>();
 
         // Helper method to add a change
         public void AddChange(AppointmentChanges change)
         {
+            if (Changes == null)
+            {
+                Changes = new List<AppointmentChanges>();
+            }
             Changes.Add(change);
         }
     }

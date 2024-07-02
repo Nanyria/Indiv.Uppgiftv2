@@ -8,30 +8,35 @@ using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Globalization;
 using Indiv.Uppgiftv2.Methods;
+using IndProjModels;
+using AutoMapper;
 
 namespace Indiv.Uppgiftv2.Controllers
 {
 
-    //[Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class AppointmentController : ControllerBase
     {
         private IAppointment<Appointment> _appointment;
+        private IMapper _mapper;
         private readonly string _filePath = Path.Combine(Directory.GetCurrentDirectory(), "appointments.json");
-        public AppointmentController(IAppointment<Appointment> appointment)
+        public AppointmentController(IAppointment<Appointment> appointment, IMapper mapper)
         {
             _appointment = appointment;
+            _mapper = mapper;
 
         }
 
         [HttpGet("week", Name = "GetAppointmentByWeek")]
-        public async Task<ActionResult<Appointment>> GetAppointmentByWeek()
+        public async Task<ActionResult<AppointmentDTO>> GetAppointmentByWeek()
         {
             try
             {
                 var appoinments = await _appointment.GetAllAppointmentsThisWeek();
-                return Ok(appoinments);
+                var appointmentDTO = appoinments.Select(p => _mapper.Map<AppointmentDTO>(p)).ToList();
+                return Ok(appointmentDTO);
             }
             catch (Exception)
             {
@@ -41,12 +46,13 @@ namespace Indiv.Uppgiftv2.Controllers
             }
         }
         [HttpGet("month", Name = "GetAppointmentByMonth")]
-        public async Task<ActionResult<Appointment>> GetAppointmentByMonth()
+        public async Task<ActionResult<AppointmentDTO>> GetAppointmentByMonth()
         {
             try
             {
                 var appoinments = await _appointment.GetAllAppointmentsThisMonth();
-                return Ok(appoinments);
+                var appointmentDTO = appoinments.Select(p => _mapper.Map<AppointmentDTO>(p)).ToList();
+                return Ok(appointmentDTO);
             }
             catch (Exception)
             {
@@ -56,16 +62,16 @@ namespace Indiv.Uppgiftv2.Controllers
             }
         }
         [HttpGet("{id:int}", Name = "GetSingleAppointment")]
-        public async Task<ActionResult<Appointment>> GetSingleAppointment(int id)
+        public async Task<ActionResult<AppointmentDTO>> GetSingleAppointment(int id)
         {
             try
             {
-                var result = await _appointment.GetSingle(id);
-                if (result == null)
+                var appointment = await _appointment.GetSingle(id);
+                if (appointment == null)
                 {
                     return NotFound();
                 }
-                return Ok(result);
+                return Ok(_mapper.Map<AppointmentDTO>(appointment));
             }
             catch (Exception)
             {
@@ -75,20 +81,22 @@ namespace Indiv.Uppgiftv2.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<Appointment>> CreateNewAppointment(Appointment newAppointment)
+        public async Task<ActionResult<AppointmentDTO>> CreateNewAppointment(AppointmentDTO newAppointmentDTO)
         {
             try
             {
-                if (newAppointment == null)
+                if (newAppointmentDTO == null)
                 {
                     return BadRequest();
                 }
+                var newAppointment = _mapper.Map<Appointment>(newAppointmentDTO);
                 var createdAppointment = await _appointment.Add(newAppointment);
+                var createdAppointmentDTO = _mapper.Map<AppointmentDTO>(createdAppointment);
                 return CreatedAtAction(nameof(GetSingleAppointment),
                     new
                     {
-                        id = createdAppointment.AppointmentID
-                    }, createdAppointment);
+                        id = createdAppointmentDTO.AppointmentID
+                    }, createdAppointmentDTO);
 
             }
             catch (Exception)
@@ -98,7 +106,7 @@ namespace Indiv.Uppgiftv2.Controllers
             }
         }
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<Appointment>> DeleteAppointment(int id)
+        public async Task<ActionResult<AppointmentDTO>> DeleteAppointment(int id)
         {
             try
             {
@@ -108,7 +116,8 @@ namespace Indiv.Uppgiftv2.Controllers
                     return NotFound($"Appointment with id {id} doesn't exist in database.");
 
                 }
-                return await _appointment.Delete(id);
+                var deletedAppointment = await _appointment.Delete(id);
+                return Ok(_mapper.Map<AppointmentDTO>(deletedAppointment));
             }
             catch (Exception)
             {
@@ -118,11 +127,11 @@ namespace Indiv.Uppgiftv2.Controllers
             }
         }
         [HttpPut("{id:int}", Name = "UpdateAppointment")]
-        public async Task<ActionResult<Appointment>> UpdateAppointment(int id, Appointment appointment)
+        public async Task<ActionResult<AppointmentDTO>> UpdateAppointment(int id, AppointmentDTO appointmentDTO)
         {
             try
             {
-                if (id != appointment.AppointmentID)
+                if (id != appointmentDTO.AppointmentID)
                 {
                     return BadRequest($"Appointment ID {id} not found.");
                 }
@@ -133,12 +142,21 @@ namespace Indiv.Uppgiftv2.Controllers
                 }
 
                 // Store original appointment JSON before updating
-                var originalJson = JsonSerializer.Serialize(appointmentToUpdate);
-
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    Converters = { new JsonStringEnumConverter() },
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                };
+                var originalJson = JsonSerializer.Serialize(appointmentToUpdate, options);
+                //Mapping
+                _mapper.Map(appointmentDTO, appointmentToUpdate);
                 // Update appointment details
-                appointmentToUpdate.Date = appointment.Date;
-                appointmentToUpdate.StartTime = appointment.StartTime;
-                appointmentToUpdate.EndTime = appointment.StartTime.AddHours(1); // Ensure EndTime is set correctly
+                appointmentToUpdate.Date = appointmentDTO.Date;
+                appointmentToUpdate.StartTime = appointmentDTO.StartTime;
+                appointmentToUpdate.EndTime = appointmentDTO.StartTime.AddHours(1); // Ensure EndTime is set correctly
 
                 // Save changes to database
                 await _appointment.SaveChangesAsync();
@@ -146,7 +164,7 @@ namespace Indiv.Uppgiftv2.Controllers
                 // Save appointments to file and log changes
                 await SaveAppointmentsToFile(appointmentToUpdate, originalJson);
 
-                return Ok(appointmentToUpdate);
+                return Ok(_mapper.Map<AppointmentDTO>(appointmentToUpdate));
             }
             catch (Exception ex)
             {
@@ -174,41 +192,24 @@ namespace Indiv.Uppgiftv2.Controllers
                 var options = new JsonSerializerOptions
                 {
                     WriteIndented = true,
-                    Converters =
-            {
-                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
-                new DateTimeConverter()
-            },
-                    ReferenceHandler = ReferenceHandler.Preserve // Handle object cycles
+                    Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve
                 };
-
-                var json = JsonSerializer.Serialize(appointments, options);
-
-
-                using (var stream = new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.Read))
-                {
-                    await JsonSerializer.SerializeAsync(stream, appointments, options);
-                }
-                // Create an object to represent the change
+                ;
                 var change = new
                 {
                     AppointmentID = updatedAppointment.AppointmentID,
                     ChangeType = "Update",
-                    Timestamp = DateTime.UtcNow,
+                    Timestamp = DateTime.UtcNow.ToString("o"),
                     PreviousValue = originalJson,
-                    NewValue = JsonSerializer.Serialize(updatedAppointment)
+                    NewValue = JsonSerializer.Serialize(updatedAppointment, options)
                 };
 
-                // Serialize the change object
-                var changeJson = JsonSerializer.Serialize(change);
+                var changeJson = JsonSerializer.Serialize(change, options);
 
-                // Append the change to the file
-                using (var stream = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
-                using (var writer = new StreamWriter(stream))
-                {
-                    await writer.WriteLineAsync(changeJson);
-                }
+                await System.IO.File.AppendAllTextAsync(_filePath, changeJson + Environment.NewLine);
             }
+
             catch (Exception ex)
             {
                 // Handle exceptions appropriately (logging, etc.)
@@ -218,23 +219,23 @@ namespace Indiv.Uppgiftv2.Controllers
         }
 
     }
-    public class DateTimeConverter : JsonConverter<DateTime>
-    {
-        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            if (reader.TokenType == JsonTokenType.String)
-            {
-                if (DateTime.TryParseExact(reader.GetString(), "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime datetime))
-                {
-                    return datetime;
-                }
-            }
-            throw new JsonException("Failed to parse datetime.");
-        }
+    //public class DateTimeConverter : JsonConverter<DateTime>
+    //{
+    //    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    //    {
+    //        if (reader.TokenType == JsonTokenType.String)
+    //        {
+    //            if (DateTime.TryParseExact(reader.GetString(), "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime datetime))
+    //            {
+    //                return datetime;
+    //            }
+    //        }
+    //        throw new JsonException("Failed to parse datetime.");
+    //    }
 
-        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(value.ToString("yyyy-MM-ddTHH:mm:ss"));
-        }
-    }
+    //    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    //    {
+    //        writer.WriteStringValue(value.ToString("yyyy-MM-ddTHH:mm:ss"));
+    //    }
+    //}
 }
